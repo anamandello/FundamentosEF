@@ -3,28 +3,53 @@ using Blog.Data;
 using Blog.Models;
 using Microsoft.EntityFrameworkCore;
 
-using (var context = new DataContext()){
-  // var tag = new Tag { Name="ASP.NET", Slug="aspnet"};
-  // context.Tags.Add(tag);
-  // context.SaveChanges();
+using var context = new DataContext();
+// var user = new User(){
+//   Name = "User 1",
+//   Slug = "user1",
+//   Email = "user1@user1.io",
+//   Bio = "dev",
+//   Image = "https://",
+//   PasswordHash = "HASH123"
+// };
 
-  // var tag = context.Tags.FirstOrDefault(x => x.Id == 1);
-  // tag.Name = ".NET";
-  // tag.Slug = "dotnet";
+// var category = new Category{
+//   Name = "Backend",
+//   Slug = "backend"
+// };
 
-  // context.Update(tag);
-  // context.SaveChanges();
+// var post = new Post{
+//   Author = user,
+//   Category = category,
+//   Body = "<p>Hello world</p>",
+//   Slug = "desenvolvimento",
+//   Summary = "Vamos começar a aprender sobre...",
+//   Title = "Backend",
+//   CreateDate = DateTime.Now,
+//   LastUpdateDate = DateTime.Now
+// };
 
-  // var tag = context.Tags.FirstOrDefault(x => x.Id == 2);
-  // context.Remove(tag);
-  // context.SaveChanges();
+// context.Posts.Add(post);
+// context.SaveChanges();
 
-  //  var tags = context.Tags.AsNoTracking().ToList();
-  //  foreach(var tag in tags){
-  //    Console.WriteLine(tag.Name);
-  //  }
+// var posts = context.Posts.AsNoTracking()
+//             .Include(x => x.Author) // -- join
+//             .Include(x => x.Category)
+//             .Where(x => x.AuthorId == 1)
+//             .OrderByDescending(x => x.LastUpdateDate)
+//             .ToList();
 
-   var tag = context.Tags.AsNoTracking().FirstOrDefault(x => x.Id == 51);
-   Console.WriteLine(tag?.Name);
-};
+// foreach(var post in posts){
+//   Console.WriteLine($"{post.Title} escrito por {post.Author?.Name} em {post.Category?.Name}");
+// }
 
+var post = context
+          .Posts
+          .Include(x => x.Author)
+          .Include(x => x.Category)
+          .OrderBy(x => x.LastUpdateDate)
+          .FirstOrDefault();
+
+post.Author.Name = "Teste";
+context.Posts.Update(post);
+context.SaveChanges();

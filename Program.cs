@@ -1,30 +1,32 @@
-﻿
-using Blog.Data;
+﻿using Blog.Data;
 using Blog.Models;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-using (var context = new DataContext()){
-  // var tag = new Tag { Name="ASP.NET", Slug="aspnet"};
-  // context.Tags.Add(tag);
+using var context = new DataContext();
+  // context.Users.Add(new User{
+  //   Bio = "Desenvolvedor",
+  //   Email = "Teste.teste.io",
+  //   Image = "https://",
+  //   Name = "Maria",
+  //   PasswordHash = "1234",
+  //   Slug = "maria"
+  // });
+
   // context.SaveChanges();
+var user = context.Users.FirstOrDefault(x => x.Id == 2);
 
-  // var tag = context.Tags.FirstOrDefault(x => x.Id == 1);
-  // tag.Name = ".NET";
-  // tag.Slug = "dotnet";
-
-  // context.Update(tag);
-  // context.SaveChanges();
-
-  // var tag = context.Tags.FirstOrDefault(x => x.Id == 2);
-  // context.Remove(tag);
-  // context.SaveChanges();
-
-  //  var tags = context.Tags.AsNoTracking().ToList();
-  //  foreach(var tag in tags){
-  //    Console.WriteLine(tag.Name);
-  //  }
-
-   var tag = context.Tags.AsNoTracking().FirstOrDefault(x => x.Id == 51);
-   Console.WriteLine(tag?.Name);
+var post = new Post {
+  Author = user,
+  Body = "Meu artigo",
+  Category = new Category{
+    Name = "backend",
+    Slug = "backend5"
+  },
+  CreateDate = DateTime.Now,
+  Slug = "meu-artigo",
+  Summary = "Neste artigo...",
+  Title = "Meu artigo"
 };
 
+context.Posts.Add(post);
+context.SaveChanges();
